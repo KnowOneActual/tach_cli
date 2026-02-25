@@ -2,6 +2,7 @@
 
 Welcome to the Tach repository. This is a concept for a lightweight terminal application designed to keep time during live productions, events, and structured meetings. The goal is to build a distraction-free countdown timer and clock that helps you manage your pace without breaking focus.
 
+> [!IMPORTANT]
 >  Right now, Tach is entirely in the brainstorming stage. It is a personal project, so development might take some time to come to fruition. There is also a chance it remains just a concept
 >  and does not move forward, but I am exploring the idea and laying out the groundwork.
 
