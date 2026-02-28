@@ -1,44 +1,55 @@
-# Contributing
+# Contributing to Tach CLI
 
-First off, thanks for taking the time to contribute! 🚀
+Thanks for your interest in contributing!
 
-We welcome contributions from the community to help improve this project.
+Tach is a lightweight terminal clock + countdown timer aimed at **live productions, events, and structured meetings**. The core idea is simple visual pacing (large auto-scaling time, color thresholds, overtime) while aggressively avoiding feature creep.
 
-## How to Contribute
+## Ground rules (scope)
 
-### Reporting Bugs
-If you find a bug or unexpected behavior, please open an issue on GitHub.
-* Check if the issue already exists.
-* Provide as much detail as possible (OS, version, steps to reproduce).
+Please help us keep Tach focused:
 
-### Requesting Features
-Have an idea for a new feature or improvement?
-* Open a Feature Request ticket.
-* Describe *why* this feature would be useful.
+- Prioritize “big readable time” and pacing features (countdown, clock mode, overtime, threshold colors).
+- Avoid adding complex menus, data logging, analytics, or “app-like” settings screens unless there’s clear user demand.
+- If you’re unsure whether something fits, open an issue first.
 
-### Submitting Changes (Pull Requests)
+## How to contribute
 
-1.  **Fork the Repo**: Click the "Fork" button in the top right corner.
-2.  **Clone your Fork**:
-    ```bash
-    git clone [https://github.com/YOUR-USERNAME/YOUR-PROJECT.git](https://github.com/YOUR-USERNAME/YOUR-PROJECT.git)
-    ```
-3.  **Create a Branch**:
-    ```bash
-    git checkout -b my-new-feature
-    ```
-4.  **Make your Changes**: Edit the code and save.
-5.  **Test Your Changes**: Ensure everything runs as expected.
-6.  **Push and PR**: Push your branch to your fork and open a Pull Request against the `main` branch.
+### 1) Issues (best place to start)
+- Bug reports: include OS, terminal emulator, steps to reproduce, and what you expected vs. what happened.
+- Feature ideas: explain the live-production use case and what problem it solves.
 
-### Bash Scripting
+### 2) Pull requests
+- Keep PRs small and focused (one improvement per PR).
+- If the PR changes the command surface (new flags/args/subcommands) or behavior, please link an issue with agreed acceptance criteria.
 
-We aim for clean, safe, and portable Bash code.
+Suggested workflow:
+1. Fork the repo and create a feature branch: `git checkout -b your-branch-name`
+2. Make changes with clear commit messages (see below).
+3. Open a PR and describe: what/why, how to test, screenshots if UI changes.
 
-  * **Linting**: This project uses a CI workflow to strictly enforce [ShellCheck](https://www.shellcheck.net/).
-  * **Requirement**: All Pull Requests must pass the linting workflow before they can be merged. We recommend running `shellcheck` locally before pushing.
-  * **Indentation**: Use 4 spaces for indentation.
+## Commit messages (recommended)
 
-## License
+We recommend Conventional Commits, because it keeps history readable and makes changelog/release notes easier:
 
-By contributing, you agree that your contributions will be licensed under the project's license.
+- `feat: add timer overtime display`
+- `fix: handle terminal resize glitch`
+- `docs: update usage examples`
+
+(Format: `type(scope optional): description`)  
+
+## Changelog updates
+
+We use a Keep a Changelog-style `CHANGELOG.md` with an `Unreleased` section at the top.
+
+- For doc-only changes, add a bullet under `Unreleased -> Changed` or `Unreleased -> Added`.
+- For user-visible behavior changes, add a bullet under the appropriate category.
+
+## Style / quality
+
+- Prefer clarity over cleverness (this tool is for high-stress production environments).
+- Add tests when the project has a test harness for the area you’re touching.
+- If you change keybindings/flags/defaults, update README usage examples too.
+
+## Code of Conduct
+
+Be respectful, assume good intent, and keep feedback actionable.
