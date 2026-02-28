@@ -1,50 +1,127 @@
-# Terminal Event Clock & Timer
+# Tach CLI — Roadmap
 
 ## Project Description
-A lightweight terminal application designed for live productions, events, and structured meetings. It provides a distraction-free timekeeping tool. The app focuses on a highly visible, auto-scaling text display that toggles seamlessly between a standard clock and a countdown timer. 
 
-## Design Thoughts
-Built using Framestorming and Musk's 5-Step Process to solve the core problem of maintaining perfect pacing without breaking focus, while aggressively avoiding feature creep.
+A lightweight terminal application designed for live productions, events, and structured meetings. Tach provides a distraction-free timekeeping tool with a highly visible, auto-scaling display that toggles between a countdown timer and a standard clock.
 
-* **Question the Frame:** The app prioritizes simple visual communication. Color shifts (Green > Yellow > Red) are used instead of multiple competing visual alerts. 
-* **Delete the Unnecessary:** Complex menus, data logging, and OS-level window hacking have been removed. The terminal emulator itself will handle styling like background transparency and borderless modes.
-* **Simplify and Optimize:** The core logic focuses strictly on large text that counts down, changes color, and goes negative for overtime. 
+---
 
-## Core Features (The Minimum Viable Product)
-* Auto-scaling text that adjusts perfectly when the window is resized.
-* Toggle between a countdown timer and the current time of day.
-* Text changes color based on time remaining (e.g., Green to Yellow to Red).
-* Overtime counter that turns red and counts into negative numbers when time expires.
-* Basic keyboard controls to pause, reset, or adjust minutes.
-* Quick launch via a shell alias (e.g., `event 30`).
+## Design Philosophy
+
+Built using Framestorming and Musk’s 5-Step Process to solve the core problem of maintaining perfect pacing without breaking focus, while aggressively avoiding feature creep.
+
+- **Question the Frame:** Simple visual communication. Color shifts (Green → Yellow → Red) replace competing alerts.
+- **Delete the Unnecessary:** No complex menus, data logging, or OS-level window hacking. The terminal emulator handles transparency and borderless modes.
+- **Simplify and Optimize:** Core logic is large text that counts down, changes color, and goes negative for overtime.
+
+---
+
+## CLI Design
+
+Tach uses a subcommand structure for clean, intuitive usage:
+
+```
+Usage: tach [COMMAND] [OPTIONS]
+
+Commands:
+  timer      Start a countdown timer (default: 5 minutes)
+  clock      Display the current time of day
+  help       Print help
+
+Options (timer):
+  -M, --minutes <MINUTES>  Add minutes to the timer
+  -S, --seconds <SECONDS>  Add seconds to the timer
+  -H, --hours <HOURS>      Add hours to the timer
+      --kill               Exit automatically when the timer finishes
+  -h, --help               Print help
+```
+
+Time units auto-convert, so `tach timer -M 90` starts a 1h 30m timer.
+A shell alias (`event 30`) can wrap the full command for quick launch.
+
+---
+
+## Core Features (MVP)
+
+- Auto-scaling text that adjusts when the terminal is resized
+- Subcommand CLI: `tach timer`, `tach clock`
+- Flexible time input with `-M`, `-S`, `-H` flags and auto-conversion
+- Text color shifts based on time remaining: Green → Yellow → Red
+- Overtime counter — turns red and counts into negative numbers when time expires
+- `--kill` flag to terminate automatically when the timer finishes
+- Keyboard controls: pause, reset, and minute adjustments
+- Quick launch via shell alias (e.g., `event 30`)
+
+---
+
+## Configuration
+
+Tach will use a TOML configuration file for persistent settings, with CLI flags overriding on a per-run basis.
+
+```toml
+[general]
+color = "green"
+bold = true
+
+[position]
+horizontal = "center"
+vertical = "center"
+
+[thresholds]
+yellow = 5   # Switch to yellow at 5 minutes remaining
+red = 2      # Switch to red at 2 minutes remaining
+
+[profiles]
+standard = 30
+quick = 5
+lightning = 2
+```
+
+Config hot-reload will allow settings to update mid-session without restarting the app (`Ctrl+R`).
+
+---
 
 ## Nice-to-Haves (Future Phases)
-* Multi-profile configurations for different meeting lengths.
-* Vim-style keybindings for rapid, home-row adjustments.
-* Global hotkeys to pause or adjust time even when the terminal is not the active window.
+
+- Multi-profile loading via CLI flag (e.g., `tach timer --profile lightning`)
+- Vim-style keybindings for rapid, home-row adjustments
+- Global hotkeys to pause or adjust time even when the terminal is not focused
+- Shell completions for Bash, Zsh, and Fish
+
+---
 
 ## Future Considerations (Pending User Demand)
-*These features were removed to keep the initial build lean, but can be revisited if there is a strong need:*
-* Subtle progress bar on the edge of the terminal.
-* Gentle flashing alerts at critical time milestones.
-* Built-in application-level background transparency and borderless "true minimalist" mode.
+
+*Removed to keep the initial build lean, but can be revisited:*
+
+- Subtle progress bar on the terminal edge
+- Gentle flashing alerts at critical time milestones
+- Built-in background transparency and borderless “true minimalist” mode
+
+---
 
 ## Development Roadmap
 
-**Phase 1: The Core Display & Toggles**
-Set up the Python script using the Textual or Rich layout library. Build the logic to display the time, accept a minute input, and toggle between the clock and the timer views. Add the basic pause and reset controls.
+**Phase 1: Core Display & CLI**
+Set up the Python project using Typer for the subcommand CLI. Build the timer and clock display with Textual. Accept `-M`/`-S`/`-H` flags and implement the `--kill` flag. Add basic pause and reset controls.
 
 **Phase 2: Visual Pacing & Overtime**
-Introduce the time threshold logic. Add the color shifts and the red overtime count-up feature. Ensure the text auto-scales smoothly during window resizing.
+Introduce color threshold logic (Green → Yellow → Red). Add the red overtime count-up. Ensure text auto-scales smoothly on window resize.
 
-**Phase 3: Advanced Controls (Optional)**
-Build out the nice-to-have features like Vim-style keybindings, global hotkeys, and multi-profile loading commands.
+**Phase 3: Configuration**
+Implement TOML config file loading with CLI overrides. Add `Ctrl+R` hot-reload. Build out multi-profile support and position controls.
 
+**Phase 4: Advanced Controls (Optional)**
+Vim-style keybindings, global hotkeys, and shell completion generation.
 
-## starting foundation:
+---
 
-Language: Python.
+## Stack
 
-UI Framework: Textual. This library is designed specifically for building responsive terminal user interfaces. It automatically handles the complex math for window resizing and layout management so we do not have to build it from scratch.
-
-Styling Engine: Rich. Textual uses this under the hood to manage text formatting and colors. This will make handling our green-to-yellow-to-red time shifts effortless.
+| Component | Library | Why |
+|---|---|---|
+| Language | Python | Accessible, rapid iteration |
+| UI Framework | [Textual](https://github.com/Textualize/textual) | Handles responsive TUI layouts and resizing |
+| Styling | [Rich](https://github.com/Textualize/rich) | Color formatting and text styling |
+| CLI | [Typer](https://typer.tiangolo.com/) | Subcommand structure, auto-generated help and completions |
+| Config | [TOML](https://toml.io/) | Human-readable, widely supported |
