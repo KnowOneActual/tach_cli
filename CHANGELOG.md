@@ -6,18 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
-- Expanded Ruff lint rule set: `W`, `SIM`, `C4`, `N`, `PTH`, `RUF`, `TCH`, `TID`.
-- `[tool.ruff.lint.per-file-ignores]` for test files (`S101`, `N802`).
-- `[tool.ruff.lint.isort]` config: first-party package, combined-as imports.
-- `[tool.ruff.lint.flake8-tidy-imports]` banning parent-relative imports.
-- `[tool.ruff.lint.pep8-naming]` config for Textual/Typer classmethod conventions.
-- `[tool.ruff.format]` expanded: `docstring-code-format`, `line-ending = lf`.
-- `.pre-commit-config.yaml` expanded with `check-merge-conflict`, `check-added-large-files`, and `debug-statements` hooks.
-- `docs/dev.md` updated with full Ruff rule reference table and notable ignores.
+- Core **Textual TUI** implementation for `timer` and `clock` commands.
+- Large, auto-scaling `Digits` display with segment-like aesthetics.
+- Production pacing colors: Green → Yellow → Red shifts based on thresholds.
+- Overtime counter that turns red and counts negative after zero.
+- Keyboard controls: `P` (Pause), `R` (Reset), `Q` (Quit).
+- **TOML Configuration** support with platform-specific default locations.
+- Support for **Named Profiles** via `--profile` flag.
+- `TACH_CONF` environment variable for configuration path override.
+- New dependencies: `platformdirs` and `tomli`.
+- Modular internal structure: `models.py`, `app.py`, `config.py`.
+- Comprehensive configuration and logic tests.
 
 ### Changed
-- `B008` added to lint ignores (required by Typer's `Option`/`Argument` default pattern).
-- `E501` moved to lint ignore (line length enforced by formatter only).
+- CLI subcommands integrated with Textual app lifecycle.
+- Timer defaults to 5 minutes when no arguments provided.
+- `TC` (Type Checking) Ruff rule prefix updated from `TCH`.
 
 ---
 

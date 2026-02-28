@@ -17,8 +17,15 @@ pip install -e ".[dev]"
 pre-commit install
 ```
 
-## Run locally
+## Internal Architecture
 
+- `src/tach_cli/models.py` — Dataclasses for `Config` and `TimerSpec`.
+- `src/tach_cli/config.py` — Logic for loading and parsing TOML configuration.
+- `src/tach_cli/app.py` — The Textual application and custom widgets.
+- `src/tach_cli/cli.py` — Typer subcommands that instantiate and run the app.
+
+## Run locally
+...
 ```bash
 tach --help
 tach timer -M 5
@@ -55,7 +62,7 @@ ruff format --check .
 | `N` | pep8-naming | Naming convention violations |
 | `PTH` | use-pathlib | `os.path` → `pathlib.Path` |
 | `RUF` | Ruff-specific | Miscellaneous improvements |
-| `TCH` | type-checking | Type-only import placement |
+| `TC` | type-checking | Type-only import placement |
 | `TID` | tidy-imports | Bans parent-relative imports |
 
 ### Notable ignores

@@ -121,17 +121,17 @@ Config hot-reload will allow settings to update mid-session without restarting t
 
 ## Development Roadmap
 
-**Phase 1: Core Display & CLI**
+**Phase 1: Core Display & CLI — ✅ COMPLETED**
 Set up the Python project using Typer for the subcommand CLI. Build the timer and clock display with Textual. Accept `-M`/`-S`/`-H` flags and implement the `--kill` flag. Add basic pause and reset controls.
 
-**Phase 2: Visual Pacing & Overtime**
-Introduce color threshold logic (Green → Yellow → Red). Add the red overtime count-up, including `soft_overrun` handling. Ensure text auto-scales smoothly on window resize.
+**Phase 2: Visual Pacing & Overtime — ✅ COMPLETED**
+Introduce color threshold logic (Green → Yellow → Red). Add the red overtime count-up. Ensure text auto-scales smoothly on window resize.
 
-**Phase 3: Configuration**
-Implement TOML config file loading with CLI overrides. Add `Ctrl+R` hot-reload. Build out multi-profile support and position controls.
+**Phase 3: Configuration — ✅ COMPLETED**
+Implement TOML config file loading with CLI overrides. Build out multi-profile support. (Note: position controls and `Ctrl+R` hot-reload are pending refinement).
 
-**Phase 4: Advanced Controls (Optional)
-**Implement time nudge keys, Vim-style keybindings, global hotkeys, and shell completion generation. Add optional post-show session summaries.
+**Phase 4: Advanced Controls (Planned)**
+Implement time nudge keys, Vim-style keybindings, global hotkeys, and shell completion generation. Add optional post-show session summaries.
 
 **Phase 5: Integrations & Automation (Future)**
 Explore a headless timing core with an integration layer (OSC / simple HTTP / other protocols) that can trigger external systems. This phase only happens once the single-machine TUI is stable in real shows.

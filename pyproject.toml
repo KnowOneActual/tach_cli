@@ -14,6 +14,8 @@ dependencies = [
   "typer>=0.12",
   "rich>=13.0",
   "textual>=0.50",
+  "platformdirs>=4.0",
+  "tomli>=2.0; python_version < '3.11'",
 ]
 
 [project.optional-dependencies]
@@ -52,15 +54,15 @@ select = [
   "N",    # pep8-naming (class/function/variable naming conventions)
   "PTH",  # flake8-use-pathlib (prefer pathlib over os.path)
   "RUF",  # Ruff-specific rules (miscellaneous improvements)
-  "TCH",  # flake8-type-checking (move type-only imports into TYPE_CHECKING)
+  "TC",    # flake8-type-checking (move type-only imports into TYPE_CHECKING)
   "TID",  # flake8-tidy-imports (ban relative parent imports)
 ]
 ignore = [
   "E501",   # line too long — handled by the formatter, not the linter
   "B008",   # function call in default argument — required by Typer's Option/Argument pattern
   "SIM117", # merge nested `with` statements — readability preference
-  "TCH001", # first-party imports in TYPE_CHECKING — too strict for this stage
-  "TCH002", # third-party imports in TYPE_CHECKING — too strict for this stage
+  "TC001", # first-party imports in TYPE_CHECKING — too strict for this stage
+  "TC002", # third-party imports in TYPE_CHECKING — too strict for this stage
 ]
 fixable = ["ALL"]
 unfixable = []
