@@ -1,55 +1,60 @@
 # Contributing to Tach CLI
 
-Thanks for your interest in contributing!
+Thanks for your interest! Tach is a lightweight terminal clock + countdown timer built for **live productions, events, and structured meetings**. The core goal is simple visual pacing — big readable time, threshold color shifts, overtime counter — with aggressive anti-feature-creep.
 
-Tach is a lightweight terminal clock + countdown timer aimed at **live productions, events, and structured meetings**. The core idea is simple visual pacing (large auto-scaling time, color thresholds, overtime) while aggressively avoiding feature creep.
+## Scope first
 
-## Ground rules (scope)
+Before opening a PR, make sure the change fits:
 
-Please help us keep Tach focused:
+- ✅ Countdown timer / clock display improvements
+- ✅ Color threshold and overtime behavior
+- ✅ Auto-scaling text and terminal resize handling
+- ✅ Keyboard controls (pause, reset, adjust)
+- ✅ TOML config and CLI flag improvements
+- ❌ Complex menus or settings screens
+- ❌ Data logging or analytics
+- ❌ OS-level notification integrations
 
-- Prioritize “big readable time” and pacing features (countdown, clock mode, overtime, threshold colors).
-- Avoid adding complex menus, data logging, analytics, or “app-like” settings screens unless there’s clear user demand.
-- If you’re unsure whether something fits, open an issue first.
+Not sure? Open an issue first.
 
-## How to contribute
+## Getting started
 
-### 1) Issues (best place to start)
-- Bug reports: include OS, terminal emulator, steps to reproduce, and what you expected vs. what happened.
-- Feature ideas: explain the live-production use case and what problem it solves.
+```bash
+git clone https://github.com/KnowOneActual/tach_cli
+cd tach_cli
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+pre-commit install
+```
 
-### 2) Pull requests
-- Keep PRs small and focused (one improvement per PR).
-- If the PR changes the command surface (new flags/args/subcommands) or behavior, please link an issue with agreed acceptance criteria.
+See [docs/dev.md](docs/dev.md) for full development setup.
 
-Suggested workflow:
-1. Fork the repo and create a feature branch: `git checkout -b your-branch-name`
-2. Make changes with clear commit messages (see below).
-3. Open a PR and describe: what/why, how to test, screenshots if UI changes.
+## Workflow
 
-## Commit messages (recommended)
+1. Open or find an issue describing the change.
+2. Fork the repo and create a branch: `git checkout -b feat/your-feature`.
+3. Make your changes.
+4. Run `ruff check .`, `ruff format .`, and `pytest` — all must pass.
+5. Open a PR using the PR template.
 
-We recommend Conventional Commits, because it keeps history readable and makes changelog/release notes easier:
+## Commit messages
 
-- `feat: add timer overtime display`
-- `fix: handle terminal resize glitch`
-- `docs: update usage examples`
+We use [Conventional Commits](https://www.conventionalcommits.org/):
 
-(Format: `type(scope optional): description`)  
+```
+feat: add overtime counter
+fix: terminal resize crash on macOS
+docs: update config examples
+refactor: extract threshold logic
+chore: bump dependencies
+```
 
-## Changelog updates
+## Changelog
 
-We use a Keep a Changelog-style `CHANGELOG.md` with an `Unreleased` section at the top.
+Add a line to the `Unreleased` section of `CHANGELOG.md` for every user-visible change. Use [Keep a Changelog](https://keepachangelog.com/) categories: `Added`, `Changed`, `Fixed`, `Removed`.
 
-- For doc-only changes, add a bullet under `Unreleased -> Changed` or `Unreleased -> Added`.
-- For user-visible behavior changes, add a bullet under the appropriate category.
+## Code style
 
-## Style / quality
-
-- Prefer clarity over cleverness (this tool is for high-stress production environments).
-- Add tests when the project has a test harness for the area you’re touching.
-- If you change keybindings/flags/defaults, update README usage examples too.
-
-## Code of Conduct
-
-Be respectful, assume good intent, and keep feedback actionable.
+- Python 3.10+
+- Ruff for lint and format (config in `pyproject.toml`)
+- Clarity over cleverness — this tool runs in high-stress live environments

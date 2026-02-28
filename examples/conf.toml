@@ -1,0 +1,19 @@
+# Tach CLI — example configuration
+# Copy to ~/.config/tach/conf.toml (Linux)
+# or ~/Library/Application Support/tach/conf.toml (macOS)
+
+[general]
+bold = true
+
+[position]
+horizontal = "center"
+vertical = "center"
+
+[thresholds]
+yellow = 300   # 5 minutes
+red = 120      # 2 minutes
+
+[profiles]
+standard = 1800   # 30 min
+quick = 300       # 5 min
+lightning = 120   # 2 min
