@@ -22,8 +22,9 @@ horizontal = "center"
 vertical = "center"
 
 [thresholds]
-yellow = 300   # switch to yellow at 5 min remaining
-red = 120      # switch to red at 2 min remaining
+yellow = 300        # switch to yellow at 5 min remaining
+red = 120           # switch to red at 2 min remaining
+soft_overrun = 120  # first 2 minutes of overtime are treated as “soft” overrun
 
 [profiles]
 standard = 1800

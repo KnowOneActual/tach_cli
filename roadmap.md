@@ -16,6 +16,20 @@ Built using Framestorming and Musk’s 5-Step Process to solve the core problem 
 
 ---
 
+## Design Constraints & Non-Goals
+
+Tach is intentionally opinionated. To keep the tool sharp for live production use, the following constraints apply:
+
+- **Single primary timer view** — one main segment at a time. Future versions might preview “next segment,” but Tach is not a full rundown editor.
+- **Production control room first** — optimized for a solo operator or small crew in a control room; talent-facing displays are a later concern.
+- **No networking in the MVP** — no OSC, HTTP, or multi-machine sync yet. Those are future integrations built on a solid local timing core.
+- **No persistent analytics** — no history dashboards or metrics. At most, an optional post-show summary.
+- **No visual noise** — no flashing by default, no animations that distract from content.
+
+These constraints should be treated as guardrails when proposing new features.
+
+---
+
 ## CLI Design
 
 Tach uses a subcommand structure for clean, intuitive usage:
@@ -70,6 +84,7 @@ vertical = "center"
 [thresholds]
 yellow = 5   # Switch to yellow at 5 minutes remaining
 red = 2      # Switch to red at 2 minutes remaining
+soft_overrun = 2  # First 2 minutes of overtime are treated as “soft” overrun
 
 [profiles]
 standard = 30
@@ -87,6 +102,8 @@ Config hot-reload will allow settings to update mid-session without restarting t
 - Vim-style keybindings for rapid, home-row adjustments
 - Global hotkeys to pause or adjust time even when the terminal is not focused
 - Shell completions for Bash, Zsh, and Fish
+- Time “nudge” keys for quickly adding or subtracting fixed amounts (e.g., `+30s`, `+2m`)
+- Optional post-show “session summary” printed once when ending a run
 
 ---
 
@@ -97,6 +114,8 @@ Config hot-reload will allow settings to update mid-session without restarting t
 - Subtle progress bar on the terminal edge
 - Gentle flashing alerts at critical time milestones
 - Built-in background transparency and borderless “true minimalist” mode
+- Talent-facing “calm mode” palettes separate from control-room palettes
+- OSC / API / headless control: a future integration layer so Tach’s timing core can drive external systems (e.g., audio cues, lighting, overlays) once the local TUI is battle-tested
 
 ---
 
@@ -106,13 +125,16 @@ Config hot-reload will allow settings to update mid-session without restarting t
 Set up the Python project using Typer for the subcommand CLI. Build the timer and clock display with Textual. Accept `-M`/`-S`/`-H` flags and implement the `--kill` flag. Add basic pause and reset controls.
 
 **Phase 2: Visual Pacing & Overtime**
-Introduce color threshold logic (Green → Yellow → Red). Add the red overtime count-up. Ensure text auto-scales smoothly on window resize.
+Introduce color threshold logic (Green → Yellow → Red). Add the red overtime count-up, including `soft_overrun` handling. Ensure text auto-scales smoothly on window resize.
 
 **Phase 3: Configuration**
 Implement TOML config file loading with CLI overrides. Add `Ctrl+R` hot-reload. Build out multi-profile support and position controls.
 
-**Phase 4: Advanced Controls (Optional)**
-Vim-style keybindings, global hotkeys, and shell completion generation.
+**Phase 4: Advanced Controls (Optional)
+**Implement time nudge keys, Vim-style keybindings, global hotkeys, and shell completion generation. Add optional post-show session summaries.
+
+**Phase 5: Integrations & Automation (Future)**
+Explore a headless timing core with an integration layer (OSC / simple HTTP / other protocols) that can trigger external systems. This phase only happens once the single-machine TUI is stable in real shows.
 
 ---
 
