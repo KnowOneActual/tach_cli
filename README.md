@@ -1,6 +1,12 @@
 # Tach CLI
 
+> [!NOTE]
+> Tach is still in active design and early development. I’m using this project to learn and refine my workflow, so things may change quickly and break often. If you’re trying it out, expect sharp edges and unstable behavior for now.
+
+
+
 A lightweight terminal application designed to keep time during live productions, events, and structured meetings. Tach is a distraction-free countdown timer and clock built to help you manage pace without breaking focus.
+
 
 ## Quick Look
 
