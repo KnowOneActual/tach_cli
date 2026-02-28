@@ -1,14 +1,22 @@
 repos:
+  # Ruff: fast Python linter + formatter
+  # https://github.com/astral-sh/ruff-pre-commit
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.9.10
     hooks:
-      - id: ruff
+      - id: ruff          # lint (with auto-fix)
         args: ["--fix"]
-      - id: ruff-format
+      - id: ruff-format   # format
+
+  # General file hygiene
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-      - id: check-yaml
-      - id: check-toml
+      - id: end-of-file-fixer       # ensure files end with a newline
+      - id: trailing-whitespace     # strip trailing whitespace
+      - id: check-yaml              # validate YAML syntax
+      - id: check-toml              # validate TOML syntax
+      - id: check-merge-conflict    # catch leftover merge conflict markers
+      - id: check-added-large-files # warn on large file commits
+        args: ["--maxkb=500"]
+      - id: debug-statements        # catch leftover print/pdb/breakpoint calls

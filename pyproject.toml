@@ -29,14 +29,66 @@ tach = "tach_cli.cli:app"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
+# ---------------------------------------------------------------------------
+# Ruff — linting + formatting
+# https://docs.astral.sh/ruff/
+# ---------------------------------------------------------------------------
+
 [tool.ruff]
 line-length = 88
 target-version = "py310"
-extend-exclude = ["dist", "build", ".venv"]
+extend-exclude = ["dist", "build", ".venv", "__pycache__"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B"]
-ignore = ["E501"]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes (undefined names, unused imports, etc.)
+  "I",    # isort (import ordering)
+  "UP",   # pyupgrade (modernize syntax for target Python version)
+  "B",    # flake8-bugbear (likely bugs and design issues)
+  "SIM",  # flake8-simplify (suggest simpler equivalents)
+  "C4",   # flake8-comprehensions (better list/dict/set comprehensions)
+  "N",    # pep8-naming (class/function/variable naming conventions)
+  "PTH",  # flake8-use-pathlib (prefer pathlib over os.path)
+  "RUF",  # Ruff-specific rules (miscellaneous improvements)
+  "TCH",  # flake8-type-checking (move type-only imports into TYPE_CHECKING)
+  "TID",  # flake8-tidy-imports (ban relative parent imports)
+]
+ignore = [
+  "E501",   # line too long — handled by the formatter, not the linter
+  "B008",   # function call in default argument — required by Typer's Option/Argument pattern
+  "SIM117", # merge nested `with` statements — readability preference
+  "TCH001", # first-party imports in TYPE_CHECKING — too strict for this stage
+  "TCH002", # third-party imports in TYPE_CHECKING — too strict for this stage
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+  "S101",  # allow assert statements in tests
+  "N802",  # allow lowercase test function names (pytest convention)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["tach_cli"]
+force-sort-within-sections = true
+combine-as-imports = true
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Allow relative imports within the package but ban reaching into parent packages
+ban-relative-imports = "parents"
+
+[tool.ruff.lint.pep8-naming]
+# Allow Textual / Typer conventions like `on_mount`, `compose`, `app`
+classmethod-decorators = ["classmethod"]
 
 [tool.ruff.format]
 quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+# Format code in docstrings (Python 3.12+ style)
+docstring-code-format = true
+docstring-code-line-length = 72

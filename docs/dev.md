@@ -28,14 +28,47 @@ tach clock
 ## Lint & format
 
 ```bash
+# Check for lint issues
 ruff check .
+
+# Auto-fix lint issues
+ruff check . --fix
+
+# Format code
 ruff format .
+
+# Check formatting without writing changes (useful in CI)
+ruff format --check .
 ```
+
+### Rule sets enabled
+
+| Code | Source | What it catches |
+|------|--------|------------------|
+| `E`/`W` | pycodestyle | Style errors and warnings |
+| `F` | pyflakes | Undefined names, unused imports |
+| `I` | isort | Import ordering |
+| `UP` | pyupgrade | Outdated syntax patterns |
+| `B` | bugbear | Likely bugs and design issues |
+| `SIM` | simplify | Overly complex expressions |
+| `C4` | comprehensions | Suboptimal list/dict/set comprehensions |
+| `N` | pep8-naming | Naming convention violations |
+| `PTH` | use-pathlib | `os.path` → `pathlib.Path` |
+| `RUF` | Ruff-specific | Miscellaneous improvements |
+| `TCH` | type-checking | Type-only import placement |
+| `TID` | tidy-imports | Bans parent-relative imports |
+
+### Notable ignores
+
+- `E501` — line length is enforced by the formatter, not the linter
+- `B008` — Typer uses function calls (`typer.Option(...)`) as default arguments by design
 
 ## Tests
 
 ```bash
 pytest
+pytest -v          # verbose
+pytest -x          # stop on first failure
 ```
 
 ## Commit style
@@ -44,9 +77,10 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
 feat: add overtime counter display
-fix: handle terminal resize on macOS
+fix: terminal resize crash on macOS
 docs: update usage examples
 refactor: extract threshold logic to own module
+chore: bump dependencies
 ```
 
 ## Releasing
