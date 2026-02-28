@@ -1,0 +1,28 @@
+name: Feature request
+description: Propose a new feature (production-first scope)
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What live-production problem does this solve?
+      description: Describe the event/broadcast/meeting scenario.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This fits the Tach design philosophy (no menus, no logging, no feature creep)
+          required: true
