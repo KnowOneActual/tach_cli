@@ -1,12 +1,9 @@
 # Tach CLI
 
 > [!NOTE]
-> Tach is still in active design and early development. I’m using this project to learn and refine my workflow, so things may change quickly and break often. If you’re trying it out, expect sharp edges and unstable behavior for now.
-
-
+> Tach is still in active design and early development. Things may change quickly and break often. If you're trying it out, expect sharp edges and unstable behavior for now.
 
 A lightweight terminal application designed to keep time during live productions, events, and structured meetings. Tach is a distraction-free countdown timer and clock built to help you manage pace without breaking focus.
-
 
 ## Quick Look
 
@@ -31,22 +28,49 @@ Most terminal clocks are built for ambient display. Tach is built for **producti
 
 | Feature | Status |
 |---|---|
-| Core timer display | ✅ Implemented |
-| Clock mode | ✅ Implemented |
-| Color threshold shifts | ✅ Implemented |
-| Overtime counter | ✅ Implemented |
-| Subcommand CLI | ✅ Implemented |
-| TOML config file | ✅ Implemented |
-| Named profiles | ✅ Implemented |
-| Shell completions | 🔲 Planned |
+| Core timer display | ✅ |
+| Clock mode | ✅ |
+| Color threshold shifts | ✅ |
+| Overtime counter | ✅ |
+| Subcommand CLI | ✅ |
+| TOML config file | ✅ |
+| Named profiles | ✅ |
+| Security lint rules | ✅ |
+| mypy strict type checking | ✅ |
+| CI coverage + security scan | ✅ |
+| Position controls in TUI | 🔲 |
+| Config hot-reload (Ctrl+R) | 🔲 |
+| Soft overrun visual | 🔲 |
+| Shell completions | 🔲 |
+| Time nudge keys | 🔲 |
 
 ## Stack
 
-- **Language:** Python
-- **UI Framework:** [Textual](https://github.com/Textualize/textual) — handles responsive terminal layouts and resizing
-- **Styling:** [Rich](https://github.com/Textualize/rich) — handles color formatting and text styling
-- **CLI:** [Typer](https://typer.tiangolo.com/) — subcommand structure and argument parsing
+| Component | Tool |
+|---|---|
+| Language | Python 3.10+ |
+| TUI | [Textual](https://github.com/Textualize/textual) |
+| Styling | [Rich](https://github.com/Textualize/rich) |
+| CLI | [Typer](https://typer.tiangolo.com/) |
+| Config | TOML |
+| Lint/Format | [Ruff](https://docs.astral.sh/ruff/) |
+| Types | [mypy](https://mypy.readthedocs.io/) (strict) |
+| Security | bandit + pip-audit |
+| Tests | pytest + pytest-cov |
 
 ## Contributing
 
-If you have suggestions, feature ideas, or thoughts on how to make this tool better, open an issue or start a discussion. All ideas are welcome.
+```bash
+# Setup
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+pre-commit install
+
+# Quality gates
+ruff check .              # lint
+ruff format --check .     # format
+mypy src/                 # type check
+pytest --cov              # tests + coverage
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines and the [roadmap](roadmap.md) for planned work.

@@ -10,6 +10,20 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
 authors = [{ name = "Beau Bremer" }]
+keywords = ["terminal", "timer", "countdown", "clock", "live-production", "tui", "textual"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Utilities",
+]
 dependencies = [
   "typer>=0.12",
   "rich>=13.0",
@@ -18,11 +32,19 @@ dependencies = [
   "tomli>=2.0; python_version < '3.11'",
 ]
 
+[project.urls]
+Homepage = "https://github.com/KnowOneActual/tach_cli"
+Repository = "https://github.com/KnowOneActual/tach_cli"
+Issues = "https://github.com/KnowOneActual/tach_cli/issues"
+Changelog = "https://github.com/KnowOneActual/tach_cli/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
 dev = [
   "pytest>=8",
+  "pytest-cov>=5",
   "pre-commit>=3.7",
   "ruff>=0.6",
+  "mypy>=1.0",
 ]
 
 [project.scripts]
@@ -54,15 +76,21 @@ select = [
   "N",    # pep8-naming (class/function/variable naming conventions)
   "PTH",  # flake8-use-pathlib (prefer pathlib over os.path)
   "RUF",  # Ruff-specific rules (miscellaneous improvements)
-  "TC",    # flake8-type-checking (move type-only imports into TYPE_CHECKING)
+  "TC",   # flake8-type-checking (move type-only imports into TYPE_CHECKING)
   "TID",  # flake8-tidy-imports (ban relative parent imports)
+  "S",    # flake8-bandit (security issues)
+  "TRY",  # tryceratops (exception handling best practices)
+  "T20",  # flake8-print (ban print/debugger calls)
+  "FA",   # flake8-future-annotations (enforce from __future__ import annotations)
 ]
 ignore = [
   "E501",   # line too long — handled by the formatter, not the linter
   "B008",   # function call in default argument — required by Typer's Option/Argument pattern
   "SIM117", # merge nested `with` statements — readability preference
-  "TC001", # first-party imports in TYPE_CHECKING — too strict for this stage
-  "TC002", # third-party imports in TYPE_CHECKING — too strict for this stage
+  "TC001",  # first-party imports in TYPE_CHECKING — too strict for this stage
+  "TC002",  # third-party imports in TYPE_CHECKING — too strict for this stage
+  "S104",   # possible hardcoded bind address — not a server project
+  "TRY003", # avoid specifying long messages outside exception class — acceptable in CLI
 ]
 fixable = ["ALL"]
 unfixable = []
@@ -94,3 +122,43 @@ line-ending = "lf"
 # Format code in docstrings (Python 3.12+ style)
 docstring-code-format = true
 docstring-code-line-length = 72
+
+# ---------------------------------------------------------------------------
+# mypy — static type checking
+# https://mypy.readthedocs.io/
+# ---------------------------------------------------------------------------
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+  "typer.*",
+  "textual.*",
+  "rich.*",
+  "tomli.*",
+  "tomllib.*",
+]
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------------------
+# Coverage — test coverage configuration
+# https://coverage.readthedocs.io/
+# ---------------------------------------------------------------------------
+
+[tool.coverage.run]
+source = ["src/tach_cli"]
+omit = ["src/tach_cli/__main__.py"]
+
+[tool.coverage.report]
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+  "@abstractmethod",
+]
+fail_under = 0
+show_missing = true
+skip_covered = false

@@ -23,6 +23,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Timer defaults to 5 minutes when no arguments provided.
 - `TC` (Type Checking) Ruff rule prefix updated from `TCH`.
 
+### Security & Tooling
+- Ruff security rules added: `S` (bandit), `TRY`, `T20`, `FA`.
+- `mypy` strict type checking wired into pre-commit + CI.
+- CI matrix extended to Python 3.10–3.13 with pip caching.
+- `pytest-cov` coverage reporting with Codecov upload.
+- Dedicated CI `security` job: `bandit` SAST + `pip-audit` dependency scan.
+- Pre-commit hardened: `detect-private-key`, `check-ast`, `check-json`, mypy.
+- `pyproject.toml`: classifiers, project URLs, keywords, mypy + coverage config.
+- `config.py`: bare `except Exception` replaced with targeted catch + structured logging.
+- `app.py`: fixed mypy strict-mode violations (BINDINGS, kwargs, action_quit override).
+
 ---
 
 ## [0.0.0] — scaffolding

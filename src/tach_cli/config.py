@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 from pathlib import Path
 import sys
@@ -14,28 +15,30 @@ if sys.version_info >= (3, 11):
 else:
     import tomli as tomllib
 
+logger = logging.getLogger(__name__)
+
 
 def load_config(config_path: Path | None = None) -> Config:
     """Load configuration from a TOML file."""
     if config_path is None:
-        # Check TACH_CONF environment variable
         env_path = os.environ.get("TACH_CONF")
         if env_path:
             config_path = Path(env_path)
         else:
-            # Use default location based on platform
             config_dir = Path(user_config_dir("tach"))
             config_path = config_dir / "conf.toml"
 
     if not config_path.exists():
+        logger.debug("No config file found at %s, using defaults.", config_path)
         return Config()
 
     try:
         with config_path.open("rb") as f:
             data = tomllib.load(f)
-    except Exception:
-        # If config is malformed, return default config
-        # In a real app we might want to log this or warn the user
+    except (OSError, tomllib.TOMLDecodeError) as e:
+        logger.warning(
+            "Failed to read config at %s: %s — using defaults.", config_path, e
+        )
         return Config()
 
     return _parse_config(data)

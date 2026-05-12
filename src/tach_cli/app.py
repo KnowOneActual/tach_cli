@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from rich.text import Text
 from textual.app import App, ComposeResult
-from textual.binding import Binding
 from textual.reactive import reactive
 from textual.widgets import Digits, Footer, Header, Static
 
@@ -33,7 +32,7 @@ class TimeDisplay(Static):
 class TachApp(App[None]):
     """The main Tach CLI application."""
 
-    BINDINGS: ClassVar[list[Binding | tuple[str, str, str]]] = [
+    BINDINGS: ClassVar[Any] = [
         ("p", "toggle_pause", "Pause/Resume"),
         ("r", "reset", "Reset"),
         ("q", "quit", "Quit"),
@@ -59,7 +58,7 @@ class TachApp(App[None]):
         spec: TimerSpec | None = None,
         clock_mode: bool = False,
         config: Config | None = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.spec = spec
@@ -139,6 +138,6 @@ class TachApp(App[None]):
             self.remaining = float(self.spec.total_seconds)
             self.is_paused = False
 
-    def action_quit(self) -> None:
+    def action_quit(self) -> None:  # type: ignore[override]
         """Quit the application."""
         self.exit()
