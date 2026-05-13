@@ -117,12 +117,12 @@ TOML config file loading with CLI overrides. Multi-profile support via `--profil
 - Structured logging replacing bare `except Exception` in config loader
 - `pyproject.toml` project metadata (classifiers, URLs, keywords)
 
-### Phase 4: Hardening (Planned)
-- Expand test coverage (currently 57%): add `conftest.py`, CLI tests via `typer.testing.CliRunner`, async TUI tests via `textual.pilot`
-- Implement `position` config support in TUI (parsed but ignored)
+### Phase 4: Hardening — ✅ COMPLETED
+- Expand test coverage (currently 98%): added `tests/test_app.py` (Textual pilot), `tests/test_cli.py` (Typer CliRunner), and mocked error paths
+- Implement `position` config support in TUI
 - Implement config `Ctrl+R` hot-reload
-- Implement `soft_overrun` visual distinction (different color vs hard red)
-- Cache `Digits` widget reference in `on_mount` instead of `query_one` per tick
+- Implement `soft_overrun` visual distinction (Magenta)
+- Cache `Digits` widget reference in `on_mount` for performance
 - Clean up dead code in `cli.py` profile+flag interaction logic
 
 ### Phase 5: Advanced Controls (Planned)

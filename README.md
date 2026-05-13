@@ -38,9 +38,9 @@ Most terminal clocks are built for ambient display. Tach is built for **producti
 | Security lint rules | ✅ |
 | mypy strict type checking | ✅ |
 | CI coverage + security scan | ✅ |
-| Position controls in TUI | 🔲 |
-| Config hot-reload (Ctrl+R) | 🔲 |
-| Soft overrun visual | 🔲 |
+| Position controls in TUI | ✅ |
+| Config hot-reload (Ctrl+R) | ✅ |
+| Soft overrun visual | ✅ |
 | Shell completions | 🔲 |
 | Time nudge keys | 🔲 |
 

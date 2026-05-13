@@ -33,9 +33,7 @@ def timer(
     """Start a countdown timer using the Textual UI."""
     config = load_config()
 
-    # Determine initial duration
-    total_seconds = 0
-
+    # 1. Start with the base duration
     if profile:
         if profile in config.profiles:
             total_seconds = config.profiles[profile]
@@ -43,25 +41,17 @@ def timer(
             typer.echo(f"Profile '{profile}' not found in configuration.")
             raise typer.Exit(code=1)
     else:
-        # Default to 5 minutes if no minutes provided
+        # Default to 5 minutes if no profile or minutes provided
         m = minutes if minutes is not None else 5
         total_seconds = hours * 3600 + m * 60 + seconds
 
-    # If flags were provided AND profile was provided, flags win (or add?)
-    # For now, let's keep it simple: if profile provided, flags are ignored
-    # OR if profile provided, and any flag is NON-ZERO, flag wins.
-    # Actually, let's just use the profile if provided, else use the flags.
-    # But if profile is used, and user did `tach timer --profile quick -S 10`,
-    # maybe they want `quick + 10s`?
-    # Let's stick to: profile sets the base, flags override/add if non-zero.
-    if profile and (hours > 0 or (minutes is not None and minutes > 0) or seconds > 0):
-        # If any flag is provided, use them INSTEAD of profile?
-        # Let's just follow: profile is a base, flags override.
-        # But which flag? All of them.
+    # 2. If flags were provided alongside a profile, flags override the entire duration
+    # This matches the user's likely intent: "use 'quick' but set it to 10s"
+    if profile and (hours > 0 or minutes is not None or seconds > 0):
         m = minutes if minutes is not None else 0
         total_seconds = hours * 3600 + m * 60 + seconds
 
-    # Convert total_seconds back to H:M:S for TimerSpec
+    # 3. Convert back to H:M:S for TimerSpec
     hh, mm = divmod(total_seconds, 3600)
     mm, ss = divmod(mm, 60)
 

@@ -25,6 +25,20 @@ def test_parse_config():
     assert config.profiles["test"] == 10
 
 
+def test_invalid_toml(tmp_path):
+    conf_file = tmp_path / "invalid.toml"
+    conf_file.write_text("this is not toml")
+    config = load_config(conf_file)
+    assert config.general.bold is True # Defaults
+
+
+def test_missing_config_debug_log(caplog):
+    import logging
+    with caplog.at_level(logging.DEBUG):
+        load_config(Path("/nonexistent/path/to/conf.toml"))
+        assert "No config file found" in caplog.text
+
+
 def test_env_override(tmp_path):
     conf_file = tmp_path / "test_conf.toml"
     conf_file.write_text("[profiles]\nenv_test = 42\n")

@@ -6,24 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
-- Core **Textual TUI** implementation for `timer` and `clock` commands.
-- Large, auto-scaling `Digits` display with segment-like aesthetics.
-- Production pacing colors: Green → Yellow → Red shifts based on thresholds.
-- Overtime counter that turns red and counts negative after zero.
-- Keyboard controls: `P` (Pause), `R` (Reset), `Q` (Quit).
-- **TOML Configuration** support with platform-specific default locations.
-- Support for **Named Profiles** via `--profile` flag.
-- `TACH_CONF` environment variable for configuration path override.
-- New dependencies: `platformdirs` and `tomli`.
-- Modular internal structure: `models.py`, `app.py`, `config.py`.
-- Comprehensive configuration and logic tests.
+- **Config hot-reload** (`Ctrl+R`) to re-apply styles and reload TOML without restarting.
+- **Soft overrun** visual state: the timer turns Magenta during the initial overtime window.
+- Support for **TUI alignment** (horizontal/vertical) via the `[position]` config section.
+- Async **TUI test suite** using `textual.pilot` and `pytest-asyncio`.
+- **CLI test suite** using `typer.testing.CliRunner` and mocks.
+- 100% test coverage for `cli.py` and `app.py` (excluding platform-specific `tomllib` fallbacks).
 
 ### Changed
-- CLI subcommands integrated with Textual app lifecycle.
-- Timer defaults to 5 minutes when no arguments provided.
-- `TC` (Type Checking) Ruff rule prefix updated from `TCH`.
+- **Performance Optimization**: Cached `Digits` widget reference in `on_mount` to reduce lookup overhead.
+- Refactored `cli.py` duration logic to ensure CLI flags act as explicit overrides for profiles.
+- Updated `on_mount` to initialize the timer display immediately, preventing "white flicker".
+- Mapped `center` vertical position to Textual's internal `middle` value for better UX.
 
 ### Security & Tooling
+- Added `pytest-asyncio` to development dependencies.
+- Renamed internal `display` attribute in `TachApp` to `timer_display` to avoid collision with base `App.display`.
 - Ruff security rules added: `S` (bandit), `TRY`, `T20`, `FA`.
 - `mypy` strict type checking wired into pre-commit + CI.
 - CI matrix extended to Python 3.10–3.13 with pip caching.

@@ -41,6 +41,7 @@ Changelog = "https://github.com/KnowOneActual/tach_cli/blob/main/CHANGELOG.md"
 [project.optional-dependencies]
 dev = [
   "pytest>=8",
+  "pytest-asyncio",
   "pytest-cov>=5",
   "pre-commit>=3.7",
   "ruff>=0.6",
