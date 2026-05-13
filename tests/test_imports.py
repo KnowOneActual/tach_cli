@@ -1,16 +1,16 @@
-def test_imports():
+def test_imports() -> None:
     import tach_cli  # noqa: F401
     from tach_cli.cli import app  # noqa: F401
 
 
-def test_timer_spec_total_seconds():
+def test_timer_spec_total_seconds() -> None:
     from tach_cli.models import TimerSpec
 
     spec = TimerSpec(hours=1, minutes=30, seconds=0)
     assert spec.total_seconds == 5400
 
 
-def test_timer_spec_auto_convert():
+def test_timer_spec_auto_convert() -> None:
     from tach_cli.models import TimerSpec
 
     spec = TimerSpec(minutes=90)

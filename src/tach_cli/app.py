@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, ClassVar
 
-from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.reactive import reactive
 from textual.widgets import Digits, Footer, Header
@@ -72,22 +71,20 @@ class TachApp(App[None]):
 
     def _apply_config(self) -> None:
         """Apply the current configuration to the UI."""
-        if self.config.general.bold:
-            self.timer_display.styles.text_style = "bold"
-        else:
-            self.timer_display.styles.text_style = "none"
+        self.timer_display.styles.text_style = (
+            "bold" if self.config.general.bold else "none"
+        )
 
         # Apply alignment from config
         h_align = self.config.position.horizontal
         v_align = self.config.position.vertical
 
         # Textual uses 'middle' for vertical center alignment
-        if v_align == "center":
-            v_align = "middle"
+        v_align = "middle" if v_align == "center" else v_align
 
         try:
-            self.styles.align_horizontal = h_align  # type: ignore[assignment]
-            self.styles.align_vertical = v_align  # type: ignore[assignment]
+            self.styles.align_horizontal = h_align
+            self.styles.align_vertical = v_align
         except Exception:
             # Fallback to center middle if config is invalid
             self.styles.align_horizontal = "center"
@@ -130,10 +127,7 @@ class TachApp(App[None]):
 
         if self.remaining <= 0:
             # Overtime logic
-            if self.remaining > -thresholds.soft_overrun:
-                color = "magenta"  # Soft overrun
-            else:
-                color = "red"      # Hard overrun
+            color = "magenta" if self.remaining > -thresholds.soft_overrun else "red"
         elif self.remaining <= thresholds.red:
             color = "red"
         elif self.remaining <= thresholds.yellow:

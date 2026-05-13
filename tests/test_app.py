@@ -1,62 +1,65 @@
-import pytest
 from unittest.mock import patch
-from textual.widgets import Digits
+
+import pytest
 from textual.color import Color
+from textual.widgets import Digits
+
 from tach_cli.app import TachApp
-from tach_cli.models import TimerSpec, Config, Thresholds, General
+from tach_cli.models import Config, General, Thresholds, TimerSpec
+
 
 @pytest.mark.asyncio
-async def test_app_timer_color_shifts():
-    config = Config(
-        thresholds=Thresholds(yellow=10, red=5, soft_overrun=5)
-    )
+async def test_app_timer_color_shifts() -> None:
+    config = Config(thresholds=Thresholds(yellow=10, red=5, soft_overrun=5))
     spec = TimerSpec(minutes=0, seconds=15)
     app = TachApp(spec=spec, config=config)
-    
-    async with app.run_test() as pilot:
+
+    async with app.run_test():
         digits = app.query_one(Digits)
-        
+
         # 15s -> Green
         assert digits.styles.color == Color.parse("green")
-        
+
         # Manually set remaining for testing thresholds
         app.remaining = 9.0
         app._update_timer_display()
         assert digits.styles.color == Color.parse("yellow")
-        
+
         app.remaining = 4.0
         app._update_timer_display()
         assert digits.styles.color == Color.parse("red")
-        
+
         app.remaining = -1.0
         app._update_timer_display()
         assert digits.styles.color == Color.parse("magenta")
-        
+
         app.remaining = -6.0
         app._update_timer_display()
         assert digits.styles.color == Color.parse("red")
 
+
 @pytest.mark.asyncio
-async def test_app_pause_reset():
+async def test_app_pause_reset() -> None:
     spec = TimerSpec(minutes=0, seconds=10)
     app = TachApp(spec=spec)
-    
+
     async with app.run_test() as pilot:
         assert app.remaining == 10.0
         assert not app.is_paused
-        
+
         await pilot.press("p")
         assert app.is_paused
-        
+
         app.remaining = 5.0
         await pilot.press("r")
         assert app.remaining == 10.0
         assert not app.is_paused
 
+
 @pytest.mark.asyncio
-async def test_app_clock_mode():
+async def test_app_clock_mode() -> None:
     app = TachApp(clock_mode=True)
-    async with app.run_test() as pilot:
+    async with app.run_test():
         assert app.is_clock_mode
         # Wait for on_mount to finish (pilot.run_test handles this usually)
         digits = app.query_one(Digits)
@@ -64,8 +67,9 @@ async def test_app_clock_mode():
         # Should be formatted as HH:MM:SS
         assert ":" in str(digits.value)
 
+
 @pytest.mark.asyncio
-async def test_app_kill_flag():
+async def test_app_kill_flag() -> None:
     spec = TimerSpec(minutes=0, seconds=1, kill=True)
     app = TachApp(spec=spec)
     with patch.object(app, "exit") as mock_exit:
@@ -74,17 +78,19 @@ async def test_app_kill_flag():
             app.update_time()
             mock_exit.assert_called_once()
 
+
 @pytest.mark.asyncio
-async def test_app_timer_hours_formatting():
+async def test_app_timer_hours_formatting() -> None:
     spec = TimerSpec(hours=1, minutes=0, seconds=0)
     app = TachApp(spec=spec)
-    async with app.run_test() as pilot:
+    async with app.run_test():
         digits = app.query_one(Digits)
         app._update_timer_display()
         assert str(digits.value) == "01:00:00"
 
+
 @pytest.mark.asyncio
-async def test_app_reload_config():
+async def test_app_reload_config() -> None:
     app = TachApp()
     async with app.run_test() as pilot:
         # Mock load_config to return a specific config
@@ -95,8 +101,9 @@ async def test_app_reload_config():
             # In Textual, setting text_style to "none" results in an empty Style()
             assert not app.timer_display.styles.text_style.bold
 
+
 @pytest.mark.asyncio
-async def test_app_action_quit():
+async def test_app_action_quit() -> None:
     app = TachApp()
     with patch.object(app, "exit") as mock_exit:
         async with app.run_test() as pilot:
