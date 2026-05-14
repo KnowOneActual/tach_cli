@@ -40,19 +40,27 @@ async def test_app_timer_color_shifts() -> None:
 
 @pytest.mark.asyncio
 async def test_app_pause_reset() -> None:
-    spec = TimerSpec(minutes=0, seconds=10)
+    # Use a larger initial value to avoid race conditions with the 0.1s interval
+    spec = TimerSpec(minutes=0, seconds=60)
     app = TachApp(spec=spec)
 
     async with app.run_test() as pilot:
-        assert app.remaining == 10.0
+        # Check initial state (ignoring small decrements from the interval)
+        assert app.remaining > 59.0
         assert not app.is_paused
 
         await pilot.press("p")
         assert app.is_paused
+        paused_val = app.remaining
+
+        # When paused, value should stay constant
+        await pilot.pause(0.2)
+        assert app.remaining == paused_val
 
         app.remaining = 5.0
         await pilot.press("r")
-        assert app.remaining == 10.0
+        # Reset should restore to 60.0 (or very close if interval ticks immediately)
+        assert app.remaining > 59.0
         assert not app.is_paused
 
 
