@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **Time Nudge Keys** and **Vim-style keybindings** for adjusting the remaining time (+/- 30s, 2m, 5m).
+- **Shell Completions** for Bash, Zsh, and Fish via Typer.
+- **Post-show Session Summary** printed via the `--summary` flag on the `timer` command.
 - **Config hot-reload** (`Ctrl+R`) to re-apply styles and reload TOML without restarting.
 - **Soft overrun** visual state: the timer turns Magenta during the initial overtime window.
 - Support for **TUI alignment** (horizontal/vertical) via the `[position]` config section.

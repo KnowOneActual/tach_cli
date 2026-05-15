@@ -21,10 +21,24 @@ def test_cli_timer_invalid() -> None:
     assert "Timer must be > 0 seconds" in result.output
 
 
-def test_cli_profile_not_found() -> None:
+def test_timer_profile_not_found() -> None:
     result = runner.invoke(app, ["timer", "--profile", "nonexistent"])
     assert result.exit_code == 1
-    assert "Profile 'nonexistent' not found" in result.output
+    assert "Profile 'nonexistent' not found" in result.stdout
+
+
+def test_timer_summary() -> None:
+    # Need to patch TachApp.run and TachApp.elapsed_time
+    with patch("tach_cli.cli.TachApp") as mock_app_class:
+        mock_instance = mock_app_class.return_value
+        mock_instance.elapsed_time = 130.0  # 2m 10s
+
+        result = runner.invoke(app, ["timer", "-M", "2", "--summary"])
+        assert result.exit_code == 0
+        assert "--- Session Summary ---" in result.stdout
+        assert "Planned:  02:00" in result.stdout
+        assert "Actual:   02:10" in result.stdout
+        assert "Overtime: 00:10" in result.stdout
 
 
 @patch("tach_cli.cli.TachApp")

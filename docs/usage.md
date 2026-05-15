@@ -19,6 +19,7 @@ tach timer -M 30                 # 30-minute countdown
 tach timer -H 1 -M 30            # 1 hour 30 minutes
 tach timer -M 45 --kill          # exit automatically when timer ends
 tach timer --profile quick       # use duration from 'quick' profile in config
+tach timer -M 15 --summary       # print a post-show summary after exiting
 ```
 
 Time units auto-convert: `tach timer -M 90` starts a 1h 30m timer.
@@ -34,6 +35,25 @@ tach clock   # display current time of day (H:M:S)
 
 | Key | Action |
 |-----|--------|
-| `P` | Pause / unpause (timer mode only) |
-| `R` | Reset to initial duration (timer mode only) |
-| `Q` | Quit Tach |
+| `p` | Pause / unpause (timer mode only) |
+| `r` | Reset to initial duration (timer mode only) |
+| `q` | Quit Tach |
+| `ctrl+r` | Reload configuration |
+| `k`, `Up` | Nudge time +30s |
+| `j`, `Down` | Nudge time -30s |
+| `l`, `Right` | Nudge time +2m |
+| `h`, `Left` | Nudge time -2m |
+| `L` | Nudge time +5m |
+| `H` | Nudge time -5m |
+
+## Shell Completions
+
+Tach supports shell completions for Bash, Zsh, and Fish.
+
+To enable completions, run the following command and follow the instructions:
+
+```bash
+tach --install-completion
+```
+
+For more details on shell completions with Typer, refer to the [Typer documentation](https://typer.tiangolo.com/tutorial/options/completion/).

@@ -6,7 +6,7 @@ from .app import TachApp
 from .config import load_config
 from .models import TimerSpec
 
-app = typer.Typer(add_completion=False, no_args_is_help=True)
+app = typer.Typer(no_args_is_help=True)
 
 
 @app.command()
@@ -28,6 +28,9 @@ def timer(
     kill: bool = typer.Option(False, "--kill", help="Exit when timer finishes."),
     profile: str | None = typer.Option(
         None, "--profile", "-p", help="Use a named profile from the config."
+    ),
+    summary: bool = typer.Option(
+        False, "--summary", help="Print a session summary after exiting."
     ),
 ) -> None:
     """Start a countdown timer using the Textual UI."""
@@ -61,4 +64,25 @@ def timer(
         typer.echo("Timer must be > 0 seconds.")
         raise typer.Exit(code=2)
 
-    TachApp(spec=spec, config=config).run()
+    app_instance = TachApp(spec=spec, config=config)
+    app_instance.run()
+
+    if summary:
+
+        def fmt(s: int) -> str:
+            h, m = divmod(s, 3600)
+            m, sc = divmod(m, 60)
+            if h > 0:
+                return f"{h:02d}:{m:02d}:{sc:02d}"
+            return f"{m:02d}:{sc:02d}"
+
+        planned = spec.total_seconds
+        actual = int(app_instance.elapsed_time)
+        overtime = max(0, actual - planned)
+
+        typer.echo("\n--- Session Summary ---")
+        typer.echo(f"Planned:  {fmt(planned)}")
+        typer.echo(f"Actual:   {fmt(actual)}")
+        if overtime > 0:
+            typer.echo(f"Overtime: {fmt(overtime)}")
+        typer.echo("-----------------------\n")

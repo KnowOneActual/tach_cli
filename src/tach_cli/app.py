@@ -19,6 +19,16 @@ class TachApp(App[None]):
         ("r", "reset", "Reset"),
         ("ctrl+r", "reload_config", "Reload Config"),
         ("q", "quit", "Quit"),
+        ("j", "nudge(-30)", "-30s"),
+        ("k", "nudge(30)", "+30s"),
+        ("h", "nudge(-120)", "-2m"),
+        ("l", "nudge(120)", "+2m"),
+        ("H", "nudge(-300)", "-5m"),
+        ("L", "nudge(300)", "+5m"),
+        ("down", "nudge(-30)", "-30s"),
+        ("up", "nudge(30)", "+30s"),
+        ("left", "nudge(-120)", "-2m"),
+        ("right", "nudge(120)", "+2m"),
     ]
 
     CSS = """
@@ -33,6 +43,7 @@ class TachApp(App[None]):
     """
 
     remaining = reactive(0.0)
+    elapsed_time = reactive(0.0)
     is_paused = reactive(False)
     is_clock_mode = reactive(False)
     timer_display: Digits
@@ -99,6 +110,7 @@ class TachApp(App[None]):
 
         if not self.is_paused:
             self.remaining -= 0.1
+            self.elapsed_time += 0.1
             if self.remaining <= 0 and self.spec and self.spec.kill:
                 self.exit()
 
@@ -154,6 +166,12 @@ class TachApp(App[None]):
         if not self.is_clock_mode:
             self._update_timer_display()
         self.notify("Configuration reloaded")
+
+    def action_nudge(self, amount: float) -> None:
+        """Add or subtract time from the remaining timer."""
+        if not self.is_clock_mode:
+            self.remaining += amount
+            self._update_timer_display()
 
     def action_quit(self) -> None:  # type: ignore[override]
         """Quit the application."""

@@ -117,3 +117,36 @@ async def test_app_action_quit() -> None:
         async with app.run_test() as pilot:
             await pilot.press("q")
             mock_exit.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_app_time_nudge() -> None:
+    spec = TimerSpec(minutes=1, seconds=0)  # 60s
+    app = TachApp(spec=spec)
+    async with app.run_test() as pilot:
+        await pilot.press("p")  # Pause so the timer doesn't tick during asserts
+        initial = app.remaining
+
+        # Test +30s
+        await pilot.press("k")
+        assert app.remaining == initial + 30.0
+
+        # Test -30s
+        await pilot.press("j")
+        assert app.remaining == initial
+
+        # Test +2m (120s)
+        await pilot.press("l")
+        assert app.remaining == initial + 120.0
+
+        # Test -2m (120s)
+        await pilot.press("h")
+        assert app.remaining == initial
+
+        # Test +5m (300s)
+        await pilot.press("L")
+        assert app.remaining == initial + 300.0
+
+        # Test -5m (300s)
+        await pilot.press("H")
+        assert app.remaining == initial

@@ -125,7 +125,7 @@ TOML config file loading with CLI overrides. Multi-profile support via `--profil
 - Cache `Digits` widget reference in `on_mount` for performance
 - Clean up dead code in `cli.py` profile+flag interaction logic
 
-### Phase 5: Advanced Controls (Planned)
+### Phase 5: Advanced Controls — ✅ COMPLETED
 - Time nudge keys (`+30s`, `+2m`, `+5m`)
 - Vim-style keybindings for rapid home-row adjustments
 - Shell completions for Bash, Zsh, and Fish
